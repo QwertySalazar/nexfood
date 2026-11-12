@@ -276,17 +276,28 @@ function sendOrderWhatsApp() {
   lines.push('📍 *DIRECCIÓN DE ENTREGA:* ' + direccion);
   if (piso) lines.push('🚪 *PISO / HABITACIÓN:* ' + piso.toUpperCase());
   if (cp) lines.push('📮 *CÓDIGO POSTAL:* ' + cp);
+  var pLower = String(pago || '').toLowerCase();
+  var esEfectivo = pLower.indexOf('efectivo') >= 0;
+  var esTarjeta = pLower.indexOf('tarjeta') >= 0;
+  var esBizum = pLower.indexOf('bizum') >= 0;
+
   lines.push('💳 *FORMA DE PAGO:* ' + pago.toUpperCase());
   if (esEfectivo) {
     lines.push('💵 *TOTAL A COBRAR EN EFECTIVO: ' + fmt(total) + '*');
     lines.push('💵 *EL CLIENTE PAGA CON:* ' + fmt(pagaCon));
     if (vuelto > 0.005) {
-      lines.push('🪙 *>>> VUELTO EXACTO A ENTREGAR: ' + fmt(vuelto) + ' <<<*');
+      lines.push('🪙 *>>> COBRAR EFECTIVO Y DAR VUELTO: ' + fmt(vuelto) + ' <<<*');
     } else {
-      lines.push('🪙 *VUELTO:* PAGO EXACTO (Sin cambio)');
+      lines.push('🪙 *COBRAR EFECTIVO: PAGO EXACTO (Sin vuelto)*');
     }
+  } else if (esTarjeta) {
+    lines.push('💳 *>>> COBRAR CON TARJETA (Llevar datáfono/TPV) <<<*');
+    lines.push('💰 *TOTAL A COBRAR CON TARJETA: ' + fmt(total) + '*');
+  } else if (esBizum) {
+    lines.push('📱 *>>> VERIFICAR EL BIZUM (Comprobar recepción) <<<*');
+    lines.push('💰 *TOTAL BIZUM: ' + fmt(total) + '*');
   } else {
-    lines.push('✅ *COBRO:* PAGADO CON ' + pago.toUpperCase() + ' (NO COBRAR EFECTIVO)');
+    lines.push('💳 *COBRO:* ' + pago.toUpperCase() + ' (' + fmt(total) + ')');
   }
   lines.push('🛵 *ENVÍO A DOMICILIO:* ' + (dom > 0 ? fmt(dom) : 'GRATIS'));
   lines.push('');
@@ -312,8 +323,14 @@ function sendOrderWhatsApp() {
   if (esEfectivo) {
     lines.push('Paga con: ' + fmt(pagaCon));
     if (vuelto > 0.005) {
-      lines.push('🪙 *VUELTO AL CLIENTE: ' + fmt(vuelto) + '*');
+      lines.push('🪙 *COBRAR EFECTIVO Y DAR VUELTO: ' + fmt(vuelto) + '*');
+    } else {
+      lines.push('🪙 *COBRAR EFECTIVO: PAGO EXACTO (Sin vuelto)*');
     }
+  } else if (esTarjeta) {
+    lines.push('💳 *COBRO: COBRAR CON TARJETA (TPV)*');
+  } else if (esBizum) {
+    lines.push('📱 *COBRO: VERIFICAR EL BIZUM*');
   }
   if (notas) {
     lines.push('');
@@ -346,10 +363,16 @@ function sendOrderWhatsApp() {
     (piso ? ('🚪 *PISO / HAB:* ' + piso.toUpperCase() + '\n') : '') +
     '💳 *FORMA DE PAGO:* ' + pago.toUpperCase() + '\n' +
     (esEfectivo
-      ? ('💵 *TOTAL EFECTIVO:* ' + fmt(total) + '\n' +
+      ? ('💵 *COBRAR EN EFECTIVO:* ' + fmt(total) + '\n' +
          '💵 *PAGA CON:* ' + fmt(pagaCon) + '\n' +
-         (vuelto > 0.005 ? ('🪙 *>>> VUELTO A LLEVAR: ' + fmt(vuelto) + ' <<<*\n') : '🪙 *PAGO EXACTO (Sin vuelto)*\n'))
-      : '✅ *PAGADO CON ' + pago.toUpperCase() + ' (NO COBRAR EFECTIVO)*\n') +
+         (vuelto > 0.005 ? ('🪙 *>>> COBRAR EFECTIVO Y DAR VUELTO: ' + fmt(vuelto) + ' <<<*\n') : '🪙 *COBRAR EFECTIVO: PAGO EXACTO (Sin vuelto)*\n'))
+      : (esTarjeta
+          ? ('💳 *>>> COBRAR CON TARJETA (Llevar datáfono) <<<*\n' +
+             '💰 *TOTAL A COBRAR: ' + fmt(total) + '*\n')
+          : (esBizum
+              ? ('📱 *>>> VERIFICAR EL BIZUM <<<*\n' +
+                 '💰 *TOTAL: ' + fmt(total) + '*\n')
+              : ('✅ *COBRO:* ' + pago.toUpperCase() + '\n')))) +
     '🛵 *ENVÍO:* ' + (dom > 0 ? fmt(dom) : 'GRATIS') + '\n' +
     '💰 *TOTAL FINAL: ' + fmt(total) + '*\n' +
     (notas ? ('📝 *NOTAS:* ' + notas + '\n\n') : '\n') +

@@ -94,39 +94,64 @@ function generateOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, 
     add('*** FORMA DE PAGO (REPARTIDOR) ***', 'b', 'c', 8.5);
     add(rep('-'));
 
-    var esEfectivo = String(pago).toLowerCase().indexOf('efectivo') >= 0;
+    var pLower = String(pago || '').toLowerCase();
+    var esEfectivo = pLower.indexOf('efectivo') >= 0;
+    var esTarjeta = pLower.indexOf('tarjeta') >= 0;
+    var esBizum = pLower.indexOf('bizum') >= 0;
+
     if (esEfectivo) {
       add('FORMA DE PAGO: EFECTIVO', 'b', 'l', 9.5);
       add();
       add(rep('*'));
-      add('TOTAL A COBRAR EN EFECTIVO:', 'b', 'c', 9);
-      add(ticketEur(total), 'b', 'c', 17); // MONTO FINAL EXTRA GRANDE Y EN NEGRITA
+      add('TOTAL A COBRAR EN EFECTIVO:', 'b', 'c', 10);
+      add(ticketEur(total), 'b', 'c', 22); // MONTO FINAL EXTRA GRANDE
       add(rep('*'));
       add();
 
       if (pagaCon && pagaCon > 0) {
-        add(lr('EL CLIENTE PAGA CON:', ticketEur(pagaCon)), 'b', 'l', 9);
+        add(lr('EL CLIENTE PAGA CON:', ticketEur(pagaCon)), 'b', 'l', 9.5);
         add();
         if (vuelto > 0.005) {
           add(rep('='));
-          add('>>> VUELTO A LLEVAR AL CLIENTE <<<', 'b', 'c', 9);
-          add(ticketEur(vuelto), 'b', 'c', 16); // VUELTO EXTRA GRANDE
+          add('>>> COBRAR EFECTIVO Y DAR VUELTO <<<', 'b', 'c', 10.5);
+          add('DAR DE VUELTO: ' + ticketEur(vuelto), 'b', 'c', 17); // VUELTO EXTRA GRANDE
           add(rep('='));
         } else {
           add(rep('*'));
-          add('>>> PAGO EXACTO: NO LLEVAR VUELTO <<<', 'b', 'c', 9);
+          add('>>> COBRAR EFECTIVO: PAGO EXACTO <<<', 'b', 'c', 10.5);
+          add('(No requiere cambio / importe exacto)', 'sm', 'c');
           add(rep('*'));
         }
       } else {
-        add(lr('PAGA CON:', 'IMPORTE EXACTO'), 'b', 'l', 9);
+        add(rep('*'));
+        add('>>> COBRAR EFECTIVO: PAGO EXACTO <<<', 'b', 'c', 10.5);
+        add(rep('*'));
       }
+    } else if (esTarjeta) {
+      add('FORMA DE PAGO: TARJETA (TPV)', 'b', 'l', 9.5);
+      add();
+      add(rep('*'));
+      add('>>> COBRAR CON TARJETA <<<', 'b', 'c', 12);
+      add('LLEVAR DATÁFONO / TPV AL CLIENTE', 'b', 'c', 9);
+      add();
+      add('TOTAL A COBRAR CON TARJETA:', 'b', 'c', 10);
+      add(ticketEur(total), 'b', 'c', 22); // MONTO FINAL EXTRA GRANDE
+      add(rep('*'));
+    } else if (esBizum) {
+      add('FORMA DE PAGO: BIZUM', 'b', 'l', 9.5);
+      add();
+      add(rep('*'));
+      add('>>> VERIFICAR EL BIZUM <<<', 'b', 'c', 12);
+      add('Comprobar recepción antes de entregar', 'b', 'c', 8.5);
+      add();
+      add('TOTAL PAGADO POR BIZUM:', 'b', 'c', 10);
+      add(ticketEur(total), 'b', 'c', 22); // MONTO FINAL EXTRA GRANDE
+      add(rep('*'));
     } else {
       add('FORMA DE PAGO: ' + String(pago).toUpperCase(), 'b', 'l', 9.5);
       add();
       add(rep('*'));
-      add('>>> YA PAGADO POR ' + String(pago).toUpperCase() + ' <<<', 'b', 'c', 10);
-      add('>>> NO COBRAR EFECTIVO <<<', 'b', 'c', 12); // AVISO CLARO AL REPARTIDOR
-      add('TOTAL: ' + ticketEur(total), 'b', 'c', 9.5);
+      add('TOTAL: ' + ticketEur(total), 'b', 'c', 22);
       add(rep('*'));
     }
     add();
@@ -159,20 +184,26 @@ function generateOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, 
     add(lr('Subtotal productos', ticketEur(sub)));
     add(lr('Envío domicilio', dom > 0 ? ticketEur(dom) : 'GRATIS'), 'b');
     add(rep('='));
-    add('TOTAL DEL PEDIDO:', 'b', 'c', 9.5);
-    add(ticketEur(total), 'b', 'c', 17); // MONTO FINAL RESUMEN EXTRA GRANDE
+    add('TOTAL DEL PEDIDO:', 'b', 'c', 10.5);
+    add(ticketEur(total), 'b', 'c', 22); // MONTO FINAL RESUMEN EXTRA GRANDE
     add(rep('='));
     if (esEfectivo) {
       if (pagaCon && pagaCon > 0) {
         add(lr('Paga con:', ticketEur(pagaCon)), 'b');
         if (vuelto > 0.005) {
-          add(lr('VUELTO A ENTREGAR:', ticketEur(vuelto)), 'b', 'l', 10);
+          add(lr('DAR DE VUELTO:', ticketEur(vuelto)), 'b', 'l', 11);
         } else {
           add(lr('Vuelto:', '0,00 € (Pago exacto)'), 'b');
         }
+      } else {
+        add(lr('Cobro:', 'COBRAR EFECTIVO (Exacto)'), 'b');
       }
+    } else if (esTarjeta) {
+      add(lr('Forma de cobro:', 'COBRAR CON TARJETA (TPV)'), 'b', 'l', 9.5);
+    } else if (esBizum) {
+      add(lr('Forma de cobro:', 'VERIFICAR EL BIZUM'), 'b', 'l', 9.5);
     } else {
-      add(lr('Forma de cobro:', String(pago).toUpperCase() + ' (NO COBRAR)'), 'b');
+      add(lr('Forma de cobro:', String(pago).toUpperCase()), 'b');
     }
     add(rep('='));
     if (notas) {

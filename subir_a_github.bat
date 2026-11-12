@@ -7,3 +7,4 @@ echo.
 "%LOCALAPPDATA%\Programs\Git\cmd\git.exe" push -u origin main
 echo.
 pause
+

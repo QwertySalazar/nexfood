@@ -1,0 +1,746 @@
+/* ════════════════════════════════════════════
+   NEXFOOD 24 HORAS — Estilos Móviles & Animaciones Ligeras (0 KB Imágenes)
+   ════════════════════════════════════════════ */
+
+/* ═══ ANIMACIONES CSS LIGERAS (Sin sobrecarga de red ni consumo de datos) ═══ */
+@keyframes foodFloat {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+  }
+  50% {
+    transform: translateY(-7px) rotate(2deg) scale(1.05);
+  }
+}
+
+@keyframes foodFloatSmall {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.04);
+  }
+}
+
+@keyframes shadowPulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.28;
+  }
+  50% {
+    transform: scale(0.72);
+    opacity: 0.12;
+  }
+}
+
+@keyframes fxFloatRise {
+  0%, 100% {
+    transform: translateY(0) scale(0.9);
+    opacity: 0.8;
+  }
+  50% {
+    transform: translateY(-5px) scale(1.15);
+    opacity: 1;
+  }
+}
+
+@keyframes animHeartBeat {
+  0%, 100% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.2);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.15);
+  }
+  70% {
+    transform: scale(1);
+  }
+}
+
+@keyframes animFlame {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    filter: drop-shadow(0 2px 6px rgba(230, 81, 0, 0.4));
+  }
+  50% {
+    transform: scale(1.12) rotate(2deg);
+    filter: drop-shadow(0 4px 12px rgba(255, 107, 0, 0.6));
+  }
+}
+
+
+/* ════════════════════════════════════════════
+   VISTA 1: HUB DE CATEGORÍAS EN TARJETAS
+   ════════════════════════════════════════════ */
+.category-hub-section {
+  padding: 0.75rem 0.75rem 2.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Grid de Tarjetas de Categorías */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+@media (min-width: 550px) {
+  .category-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.9rem;
+  }
+}
+
+@media (min-width: 850px) {
+  .category-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.1rem;
+  }
+}
+
+/* Tarjeta individual de Categoría Móvil */
+.cat-hub-card {
+  position: relative;
+  border-radius: 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1rem 0.65rem 0.85rem;
+  cursor: pointer;
+  overflow: hidden;
+  min-height: 140px;
+  transition: transform 0.16s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.cat-hub-card:active {
+  transform: scale(0.94);
+}
+
+/* Resplandor suave de fondo basado en el color de la categoría */
+.cat-card-glow {
+  position: absolute;
+  top: -20px;
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--card-color, var(--red)) 0%, transparent 70%);
+  opacity: 0.14;
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+[data-theme="dark"] .cat-card-glow {
+  opacity: 0.24;
+}
+
+/* Escenario de la ilustración animada */
+.anim-food-stage {
+  position: relative;
+  width: 66px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.45rem;
+  z-index: 2;
+}
+
+/* Sombra proyectada animada */
+.anim-food-shadow {
+  position: absolute;
+  bottom: 2px;
+  width: 44px;
+  height: 10px;
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: shadowPulse 2.8s ease-in-out infinite;
+}
+
+[data-theme="dark"] .anim-food-shadow {
+  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6) 0%, transparent 70%);
+}
+
+/* Icono animado principal que flota */
+.anim-food-icon {
+  position: relative;
+  z-index: 2;
+  font-size: 2.75rem;
+  line-height: 1;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.14));
+  animation: foodFloat 2.8s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Efectos especiales para Favoritos y Top */
+.anim-food-icon.anim-heart {
+  animation: animHeartBeat 1.6s ease-in-out infinite;
+}
+
+.anim-food-icon.anim-flame {
+  animation: animFlame 2s ease-in-out infinite;
+}
+
+/* Micro-efecto animado flotante (vapor, fuego, chispas, burbujas) */
+.anim-food-fx {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  font-size: 1.15rem;
+  z-index: 3;
+  animation: fxFloatRise 2.2s ease-in-out infinite;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+/* Información de la tarjeta (Texto y Contador) */
+.cat-card-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  width: 100%;
+  z-index: 2;
+}
+
+.cat-card-title {
+  font-family: var(--ff1);
+  font-size: 0.94rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.cat-card-count-badge {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--card-color, var(--red));
+  background: rgba(184, 3, 0, 0.08);
+  padding: 0.12rem 0.55rem;
+  border-radius: 20px;
+}
+
+[data-theme="dark"] .cat-card-count-badge {
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--gold);
+}
+
+/* Tarjetas especiales (Favoritos y Top) */
+.cat-card-favs {
+  border-color: rgba(224, 36, 94, 0.35);
+}
+
+.cat-card-top {
+  border-color: rgba(230, 81, 0, 0.35);
+}
+
+
+/* ════════════════════════════════════════════
+   VISTA 2: CATÁLOGO DE LA CATEGORÍA DESPLEGADA
+   ════════════════════════════════════════════ */
+.category-catalog-section {
+  padding: 0 0.75rem 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Cabecera pegajosa (Sticky) de la categoría abierta */
+.cat-catalog-header {
+  position: sticky;
+  top: var(--nav-h);
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  z-index: 800;
+  padding: 0.65rem 0.5rem 0.5rem;
+  margin: 0 -0.75rem 1rem;
+  backdrop-filter: blur(12px);
+}
+
+.cch-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.cat-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: var(--surface-alt);
+  color: var(--text);
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.8rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  flex-shrink: 0;
+  transition: all var(--tr);
+}
+
+.cat-back-btn:active {
+  transform: scale(0.93);
+  background: var(--border-strong);
+}
+
+.cch-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 0;
+  flex: 1;
+  justify-content: center;
+}
+
+.cch-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: inline-block;
+  animation: foodFloatSmall 2.6s ease-in-out infinite;
+}
+
+.cch-title {
+  font-family: var(--ff1);
+  font-size: 1.05rem;
+  font-weight: 900;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.cch-count {
+  font-size: 0.72rem;
+  color: var(--text-soft);
+  display: block;
+}
+
+/* Pills Horizontales de Categorías */
+.cat-pills-wrap {
+  overflow-x: auto;
+  white-space: nowrap;
+  padding: 0.2rem 0.25rem 0.35rem;
+  display: flex;
+  gap: 0.45rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.cat-pills-wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.cat-pill {
+  padding: 0.4rem 0.8rem;
+  border-radius: 30px;
+  background: var(--surface-alt);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all var(--tr);
+}
+
+.cat-pill:active {
+  transform: scale(0.94);
+}
+
+.cat-pill.active {
+  background: linear-gradient(135deg, var(--red), var(--red-d));
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 3px 10px var(--red-glow);
+}
+
+.cp-emoji {
+  font-size: 0.95rem;
+}
+
+/* Buscador interno de la categoría */
+.cat-search-box {
+  position: relative;
+  margin-bottom: 1rem;
+}
+
+.cat-search-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 1rem 0 2.7rem;
+  border-radius: 12px;
+  background: var(--surface);
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  outline: none;
+  font-size: 16px;
+  transition: border-color var(--tr);
+}
+
+.cat-search-input:focus {
+  border-color: var(--red);
+}
+
+.csi-icon {
+  position: absolute;
+  top: 50%;
+  left: 0.95rem;
+  transform: translateY(-50%);
+  color: var(--text-soft);
+  font-size: 0.92rem;
+  pointer-events: none;
+}
+
+
+/* ════════════════════════════════════════════
+   TARJETA DE PRODUCTO MÓVIL (Con Ilustración Animada)
+   ════════════════════════════════════════════ */
+.cat-product-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+}
+
+@media (min-width: 650px) {
+  .cat-product-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.9rem;
+  }
+}
+
+@media (min-width: 950px) {
+  .cat-product-list {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.1rem;
+  }
+}
+
+.cat-prod-card {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1.5px solid var(--border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.15s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cat-prod-card:active {
+  transform: scale(0.985);
+}
+
+.cat-prod-card.in-cart {
+  border-color: var(--gold-d);
+  box-shadow: 0 4px 16px rgba(247, 209, 100, 0.18);
+  background: linear-gradient(to right, rgba(247, 209, 100, 0.04), var(--surface));
+}
+
+.cat-prod-card.highlight {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px var(--red-glow);
+}
+
+/* Área de Ilustración Animada del Producto */
+.cpc-media {
+  width: 86px;
+  height: 86px;
+  min-width: 86px;
+  margin: 0.65rem;
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(184, 3, 0, 0.08), rgba(184, 3, 0, 0.14));
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .cpc-media {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+}
+
+.cpc-anim-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cpc-food-icon {
+  font-size: 2.3rem;
+  line-height: 1;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.15));
+  animation: foodFloatSmall 2.6s ease-in-out infinite;
+  display: inline-block;
+}
+
+.cpc-food-fx {
+  position: absolute;
+  top: -4px;
+  right: -6px;
+  font-size: 0.95rem;
+  animation: fxFloatRise 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
+}
+
+.pcard-tag {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  z-index: 3;
+  font-size: 0.62rem;
+  font-weight: 800;
+  padding: 0.12rem 0.4rem;
+  border-radius: 4px;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.pcard-tag-vendido { background: #e65100; }
+.pcard-tag-nuevo { background: #0073E6; }
+.pcard-tag-promo { background: #c2185b; }
+
+.cpc-fav {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(4px);
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+[data-theme="dark"] .cpc-fav {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.cpc-fav:active {
+  transform: scale(1.3);
+}
+
+/* Cuerpo y Datos del Producto */
+.cpc-body {
+  flex: 1;
+  padding: 0.65rem 0.75rem 0.65rem 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+}
+
+.cpc-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.2rem;
+}
+
+.cpc-badge-cat {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.cpc-time {
+  font-size: 0.7rem;
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.cpc-name {
+  font-weight: 700;
+  font-size: 0.88rem;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 0.45rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cpc-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  gap: 0.5rem;
+}
+
+.cpc-price {
+  font-family: var(--ff1);
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--text);
+}
+
+/* Controles de Compra: Botón Añadir / Stepper (+ / -) */
+.pcard-ctrl {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.btn-add-initial {
+  background: var(--red);
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  box-shadow: 0 3px 10px var(--red-glow);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.btn-add-initial:active {
+  transform: scale(0.92);
+}
+
+.pcard-qty {
+  display: flex;
+  align-items: center;
+  background: var(--surface-alt);
+  border-radius: 30px;
+  padding: 2px;
+  gap: 2px;
+  border: 1px solid var(--border);
+}
+
+.pq-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--surface);
+  color: var(--text);
+  font-weight: 900;
+  font-size: 1.05rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  transition: transform 0.12s ease;
+}
+
+.pq-btn:active {
+  transform: scale(0.88);
+}
+
+.pq-add {
+  background: var(--red);
+  color: #fff;
+}
+
+.pq-num {
+  font-size: 0.86rem;
+  font-weight: 800;
+  min-width: 22px;
+  text-align: center;
+}
+
+.cat-empty-msg {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: var(--text-soft);
+}
+
+.cem-icon {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+}
+
+
+/* ════════════════════════════════════════════
+   BARRA INFERIOR MÓVIL STICKY (Bottom Nav)
+   ════════════════════════════════════════════ */
+.mobile-bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: var(--bottom-nav-h);
+  background: var(--surface);
+  border-top: 1.5px solid var(--border);
+  box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  z-index: 996;
+  padding-bottom: env(safe-area-inset-bottom);
+  backdrop-filter: blur(12px);
+}
+
+.bnav-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 700;
+  flex: 1;
+  height: 100%;
+  position: relative;
+  transition: color var(--tr), transform var(--tr);
+}
+
+.bnav-btn i {
+  font-size: 1.2rem;
+}
+
+.bnav-btn:active {
+  transform: scale(0.92);
+}
+
+.bnav-btn.active, .bnav-btn:hover {
+  color: var(--red);
+}
+
+.bnav-cart-badge {
+  position: absolute;
+  top: 8px;
+  right: calc(50% - 18px);
+  background: var(--gold);
+  color: #000;
+  font-size: 0.68rem;
+  font-weight: 900;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}

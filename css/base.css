@@ -1,0 +1,71 @@
+/* ════════════════════════════════════════════
+   NEXFOOD 24 HORAS — Reset y Estilos Base
+   ════════════════════════════════════════════ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--ff2);
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background var(--tr), color var(--tr);
+  padding-bottom: calc(var(--bottom-nav-h) + 15px);
+}
+
+body.cartbar-on {
+  padding-bottom: calc(var(--bottom-nav-h) + 68px);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* 16px font-size para evitar el auto-zoom molesto en navegadores móviles (iOS Safari) */
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 16px;
+}
+
+/* Contenedor principal de la página */
+#page {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}

@@ -1,0 +1,63 @@
+/* ════════════════════════════════════════════
+   NEXFOOD 24 HORAS — Variables y Tokens de Diseño
+   ════════════════════════════════════════════ */
+:root {
+  --red: #B80300;
+  --red-d: #8c0200;
+  --red-glow: rgba(184, 3, 0, 0.35);
+  --blue: #0073E6;
+  --blue-d: #0050a0;
+  --navy: #001855;
+  --navy-d: #000d2e;
+  --gold: #F7D164;
+  --gold-d: #d4a820;
+  --green: #22c55e;
+  --green-d: #16a34a;
+  --dark: #0a0a12;
+  --dark2: #13131f;
+  --cream: #fbfbfd;
+  --white: #ffffff;
+  --gray: #6b7280;
+  --light: #f3f4f6;
+  --r-sm: 8px;
+  --r: 16px;
+  --r-lg: 24px;
+  --r-xl: 32px;
+  --nav-h: 56px;
+  --bottom-nav-h: 64px;
+  --tr: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  --ff1: 'Montserrat', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --ff2: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  /* Modo Claro */
+  --bg: #f8f9fa;
+  --bg2: #ffffff;
+  --surface: #ffffff;
+  --surface-alt: #f1f3f5;
+  --text: #1a1a2e;
+  --text-soft: #595c68;
+  --border: rgba(0, 0, 0, 0.08);
+  --border-strong: rgba(0, 0, 0, 0.15);
+  --glass-bg: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.09);
+  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme="dark"] {
+  --bg: #0b0b14;
+  --bg2: #121220;
+  --surface: #181828;
+  --surface-alt: #202035;
+  --text: #f3f4f8;
+  --text-soft: #9da3b4;
+  --border: rgba(255, 255, 255, 0.09);
+  --border-strong: rgba(255, 255, 255, 0.18);
+  --glass-bg: rgba(18, 18, 32, 0.88);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 6px 24px rgba(0, 0, 0, 0.55);
+  --shadow-lg: 0 14px 40px rgba(0, 0, 0, 0.7);
+}
+

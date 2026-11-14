@@ -26,10 +26,10 @@ function ticketWrap(text, width) {
   return out.length ? out : [''];
 }
 
-function generateOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk) {
+function buildOrderPDFDoc(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk) {
   try {
     var jsPDFLib = window.jspdf ? window.jspdf.jsPDF : null;
-    if (!jsPDFLib) { console.warn('jsPDF no disponible'); return false; }
+    if (!jsPDFLib) { console.warn('jsPDF no disponible'); return null; }
 
     var COLS = 46, ML = 5, PW = 80;
     function lr(l, r) { return l + new Array(Math.max(1, COLS - l.length - r.length) + 1).join(' ') + r; }
@@ -195,9 +195,39 @@ function generateOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, 
         else doc.text(l.t, ML, y - h * 0.25);
       }
     });
-    doc.save(ticketFileName(t));
+    return { doc: doc, t: t };
+  } catch (e) {
+    console.error('buildOrderPDFDoc error:', e);
+    return null;
+  }
+}
+
+function generateOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk) {
+  try {
+    var res = buildOrderPDFDoc(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk);
+    if (!res || !res.doc) return false;
+    res.doc.save(ticketFileName(res.t));
     return true;
-  } catch (e) { console.error('PDF error:', e); return false; }
+  } catch (e) {
+    console.error('PDF error:', e);
+    return false;
+  }
+}
+
+function previewOrderPDF(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk) {
+  try {
+    var res = buildOrderPDFDoc(nombre, direccion, piso, cp, telefono, pago, pagaCon, vuelto, notas, items, sub, dom, total, tk);
+    if (!res || !res.doc) return null;
+    var blob = res.doc.output('blob');
+    return {
+      blobUrl: URL.createObjectURL(blob),
+      fileName: ticketFileName(res.t),
+      doc: res.doc
+    };
+  } catch (e) {
+    console.error('previewOrderPDF error:', e);
+    return null;
+  }
 }
 
 function ticketFileName(t) { return 'Tirilla-' + t.num + '.pdf'; }
